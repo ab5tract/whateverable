@@ -29,7 +29,8 @@ unit module Whateverable::Running;
 #↓ Unpacks a build, runs $code and cleans up.
 sub run-smth($full-commit-hash, Code $code,
              :$backend=‘rakudo-moar’,
-             :$wipe = True, :$lock = True) is export {
+             :$wipe = True, :$lock = True,
+             :$bot = True) is export {
     my $build-path    = run-smth-build-path $full-commit-hash, :$backend;
     my $archive-path  = “$CONFIG<projects>{$backend}<archives-path>/$full-commit-hash.tar.zst”;
     my $archive-link  = “$CONFIG<projects>{$backend}<archives-path>/$full-commit-hash”;
@@ -41,10 +42,15 @@ sub run-smth($full-commit-hash, Code $code,
     if $lock {
         # lock on the destination directory to make
         # sure that other bots will not get in our way.
-        while run(:err(Nil), ‘mkdir’, ‘--’, $build-path).exitcode ≠ 0 {
-            test-delay if %*ENV<TESTABLE>;
-            note “$build-path is locked. Waiting…”;
-            sleep 0.5 # should never happen if configured correctly (kinda)
+
+        if !$bot {
+            while run(:err(Nil), ‘mkdir’, ‘--’, $build-path).exitcode ≠ 0 {
+                test-delay if %*ENV<TESTABLE>;
+                note “$build-path is locked. Waiting…”;
+                sleep 0.5
+                # should never happen if configured correctly (kinda)
+
+            }
         }
 
         my $proc1;
