@@ -34,6 +34,7 @@
         "Cro::HTTP::Client",
         "Digest",
         "Digest::HMAC",
+        "Digest::SHA",
         "Digest::SHA256::Native",
         "File::Directory::Tree",
         "File::Temp",
