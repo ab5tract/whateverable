@@ -108,7 +108,8 @@ sub process-commit($project, $commit) is export {
     mkdir $BUILDS-LOCATION;
 
     use File::Temp;
-    my ($temp-folder,) = tempdir, :!unlink;
+    my $temp-folder  = "/tmp/wtf/temp/ok/";
+    mkdir($temp-folder);
     my $build-path   = $BUILDS-LOCATION.add($commit).absolute;
     my $log-path     = $build-path;
 
