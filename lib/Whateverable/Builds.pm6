@@ -47,7 +47,7 @@ sub pull-cloned-repos is export {
     ensure-cloned-repos;
     try (run :cwd($_), <git pull> with $CONFIG<projects><rakudo-moar><repo-origin>);
     try (run :cwd($_), <git pull> with $CONFIG<projects><moarvm><repo-origin>);
-    CATCH { .continue }
+    CATCH { say "ignoring inconseqentuel exception: " ~ .gist }
     True
 }
 
