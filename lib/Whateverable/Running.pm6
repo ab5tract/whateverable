@@ -43,7 +43,7 @@ sub run-smth($full-commit-hash, Code $code,
         # lock on the destination directory to make
         # sure that other bots will not get in our way.
 
-        if !$bot {
+        if $bot {
             while run(:err(Nil), ‘mkdir’, ‘--’, $build-path).exitcode ≠ 0 {
                 test-delay if %*ENV<TESTABLE>;
                 note “$build-path is locked. Waiting…”;
@@ -51,7 +51,7 @@ sub run-smth($full-commit-hash, Code $code,
                 # should never happen if configured correctly (kinda)
 
             }
-        }
+        } else { mkdir $build-path }
 
         my $proc1;
         my $proc2;
