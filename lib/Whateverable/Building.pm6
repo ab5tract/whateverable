@@ -23,7 +23,7 @@ unit module Whateverable::Building;
 
 enum Project <rakudo-moar moarvm rakudo-jvm rakudo-js>;
 
-sub latest-repo($project = $*PROJECT) { “$*TMPDIR/whateverable/{$project}-repo”.IO }
+sub latest-repo($project = $*PROJECT) { “$*TMPDIR/whateverable/{$project}”.IO }
 sub get-commits(*@args) {
     run(:cwd(latest-repo $*PROJECT), :out, <git log -z --pretty=%H>, |@args)
     .out.split(0.chr, :skip-empty)
