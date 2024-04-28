@@ -57,11 +57,17 @@ sub ensure-config($handle = $*IN) is export {
     $CONFIG<stdin> = $CONFIG<default-stdin>;
 
     # TODO find a way to get rid of this code
-    $CONFIG<projects><rakudo-moar><repo-path>     .= IO .= absolute;
-    $CONFIG<projects><rakudo-moar><archives-path> .= IO .= absolute;
-    $CONFIG<projects><moarvm><repo-path>          .= IO .= absolute;
-    $CONFIG<projects><moarvm><archives-path>      .= IO .= absolute;
+    $CONFIG<projects><rakudo-moar><repo-path>     .= &ensure-path;
+    $CONFIG<projects><rakudo-moar><archives-path> .= &ensure-path;
+    $CONFIG<projects><moarvm><repo-path>          .= &ensure-path;
+    $CONFIG<projects><moarvm><archives-path>      .= &ensure-path;
 
-    $CONFIG<builds-location>          .= IO .= absolute;
+    $CONFIG<builds-location>          .= &ensure-path;
     $CONFIG<bisectable><build-lock>   .= IO .= absolute;
+}
+
+subset EnsurePath where { (.IO.e && .IO.d) || mkdir($_) }
+
+sub ensure-path(EnsurePath $path is rw) {
+    $path .= IO .= absolute
 }
