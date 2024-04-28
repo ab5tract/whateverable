@@ -100,9 +100,9 @@ sub run-snippet($full-commit-hash, $file,
                 :$timeout=%*BOT-ENV<timeout> // 10,
                 :$stdin=$CONFIG<stdin>,
                 :$ENV,
-                :$wipe = True, :$lock = True,
+                :$wipe = True, :$lock = True, :$bot = True
                ) is export {
-    run-smth :$wipe, :$lock, :$backend, $full-commit-hash, -> $path {
+    run-smth :$wipe, :$lock, :$bot, :$backend, $full-commit-hash, -> $path {
         my $binary-path = $path.IO.add: ‘bin/perl6’;
         my %tweaked-env = $ENV // %*ENV;
         %tweaked-env<PATH> = join ‘:’, $binary-path.parent, (%tweaked-env<PATH> // Empty);
