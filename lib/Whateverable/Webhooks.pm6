@@ -17,6 +17,7 @@
 
 use Cro::HTTP::Router;
 use Cro::HTTP::Server;
+use Cro::Transform;
 
 use Whateverable::Config;
 
@@ -25,6 +26,7 @@ unit module Whateverable::Webhooks;
 
 class StrictTransportSecurity does Cro::Transform {
     has Str:D $.secret is required;
+    has Int:D $.max-age = 31536000;
 
     method consumes() { Cro::TCP::Message }
     method produces() { Cro::TCP::Message }
